@@ -16,4 +16,4 @@ class GameCtrl {
     static void leftClick();
 
     static void select(int x, int y);
-}
+};
