@@ -1,14 +1,16 @@
 #include <iostream>
 #include <vector>
 
-#include "simInput/keyboard.h"
+#include "interface/keyboard.h"
+#include "interface/mouse.h"
 
 #include <thread>
 #include <chrono>
 
 int main(int argc, char* argv[]) {
     
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    key_input('Q');
+    Mouse::move_to(1 << 15, (1 << 15) + (1 << 11));
+    Keyboard::input('Q');
 }
