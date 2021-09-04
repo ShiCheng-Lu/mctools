@@ -1,4 +1,6 @@
-#include "actionaController.h"
+#include "actionController.h"
+#include "mouse.h"
+#include "keyboard.h"
 
 #include <windows.h>
 
@@ -41,5 +43,11 @@ void ActionController::setInvType(InvType type) {
     }
 }
 
-void takeItem(int x, int y) {}
-void dropItem(int x, int y);
+void takeItem(int x, int y) {
+    Mouse::click(Mouse::Button::LEFT);
+    Sleep(34); // 34 ms is two frames, needed for minecraft to pick up the english
+}
+
+void dropItem(int x, int y) {
+    Keyboard::input('Q');
+}

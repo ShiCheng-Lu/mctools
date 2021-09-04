@@ -9,6 +9,4 @@ class GameWindow {
 
    public:
     GameWindow();
-
-    
 };

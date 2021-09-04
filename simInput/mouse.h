@@ -12,6 +12,8 @@ class Mouse {
 
     static void press(Button but);
     static void release(Button but);
+
+    static void move(int dx, int dy);
 };
 
-#define _MOUSE_H_
+#endif
