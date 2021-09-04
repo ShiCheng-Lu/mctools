@@ -1,8 +1,11 @@
 #include "keyboard.h"
 
 #include <windows.h>
-#include <chrono>
-#include <thread>
+#include <bitset>
+
+#define KEY_MAX 256
+
+// SETTERS
 
 static uint8_t get_id(const uint8_t key) {
     if (key == '/') {
@@ -28,4 +31,32 @@ void Keyboard::release(const uint8_t key) {
     uint8_t key_id = get_id(key);
 
     keybd_event(key_id, 0, 0, 0);
+}
+
+// GETTERS
+
+static std::bitset<KEY_MAX> processed;
+static std::bitset<KEY_MAX> keyDown;
+
+bool Keyboard::isDown(const uint8_t key) {
+    uint8_t key_id = get_id(key);
+    return keyDown.test(key_id);
+}
+
+bool Keyboard::isPressed(const uint8_t key) {
+    uint8_t key_id = get_id(key);
+    if (!processed.test(key_id)) {
+        processed.set(key_id);
+        return keyDown.test(key_id);
+    }
+    return false;
+}
+
+void Keyboard::update() {
+    processed.reset();
+    keyDown.reset();
+
+    for (int i = 0; i < KEY_MAX; ++i) {
+        continue;
+    }
 }

@@ -4,6 +4,8 @@
 #include <bitset>
 #include <map>
 
+#define BUTTONS_MAX 3
+
 // SETTERS
 
 static const std::map<uint8_t, uint16_t> s_event_up = {
@@ -43,26 +45,25 @@ void Mouse::move_to(const uint16_t x, const uint16_t y) {
 }
 
 // GETTERS
-#define BUTTONS_MAX 3
 
 static std::bitset<BUTTONS_MAX> processed;
-static std::bitset<BUTTONS_MAX> downed;
+static std::bitset<BUTTONS_MAX> btnDown;
 
-bool Mouse::down(const uint8_t btn) {
-    return downed.test(btn);
+bool Mouse::isDown(const uint8_t btn) {
+    return btnDown.test(btn);
 }
 
-bool Mouse::pressed(const uint8_t btn) {
-    if (!processed[btn]) {
+bool Mouse::isPressed(const uint8_t btn) {
+    if (!processed.test(btn)) {
         processed.set(btn);
-        return downed.test(btn);
+        return btnDown.test(btn);
     }
     return false;
 }
 
 void Mouse::update() {
     processed.reset();
-    downed.reset();
+    btnDown.reset();
 
     for (int i = 0; i < BUTTONS_MAX; ++i) {
         continue;

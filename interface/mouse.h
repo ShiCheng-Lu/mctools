@@ -1,6 +1,8 @@
 #ifndef _MOUSE_H_
 #define _MOUSE_H_
 
+// this module simulate and listen for mouse events
+
 #include <cstdint>
 
 namespace Mouse {
@@ -27,13 +29,14 @@ void move_to(const uint16_t dx, const uint16_t dy);
 
 // GETTERS
 
-// if the button is pressed down
-bool down(const uint8_t btn);
+// if the button is isPressed isDown
+bool isDown(const uint8_t btn);
 
-// if the button was pressed since last update
-bool pressed(const uint8_t btn);
+// if the button was isPressed since last update
+bool isPressed(const uint8_t btn);
 
 void update();
+
 }  // namespace Mouse
 
 #endif

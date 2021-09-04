@@ -1,6 +1,8 @@
 #ifndef _KEYBOARD_H_
 #define _KEYBOARD_H_
 
+// this module simulate and listen for keyboard events
+
 #include <cstdint>
 
 namespace Keyboard {
@@ -13,9 +15,11 @@ void press(const uint8_t key);
 void release(const uint8_t key);
 
 // get keyboard inputs
-bool down(const uint8_t key);
+bool isDown(const uint8_t key);
 
-bool pressed(const uint8_t key);
+bool isPressed(const uint8_t key);
+
+void update();
 
 }  // namespace Keyboard
 
