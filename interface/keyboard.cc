@@ -30,7 +30,7 @@ void Keyboard::press(const uint8_t key) {
 void Keyboard::release(const uint8_t key) {
     uint8_t key_id = get_id(key);
 
-    keybd_event(key_id, 0, 0, 0);
+    keybd_event(key_id, 0, KEYEVENTF_KEYUP, 0);
 }
 
 // GETTERS
