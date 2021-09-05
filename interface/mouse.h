@@ -4,6 +4,7 @@
 // this module simulate and listen for mouse events
 
 #include <cstdint>
+#include <utility>
 
 namespace Mouse {
 

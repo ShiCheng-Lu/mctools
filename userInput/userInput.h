@@ -11,26 +11,17 @@
 
 #define KEY_MAX 0xFF
 
-typedef unsigned char byte;
-
-class KeyboardTracker {
-    static std::bitset<KEY_MAX> down;
-    static std::bitset<KEY_MAX> pressed;
-   public:
-    static void update();
-    static void isDown(byte key);
-    static void isPressed(byte key);
-};
+#include <cstdint>
 
 class InputAction {
-    std::vector<byte> req_keys;
+    std::vector<uint8_t> req_keys;
     void (*function)(void*);
     void* context;
     bool activated;
     bool continuous;
 
    public:
-    InputAction(std::vector<byte> req_keys,
+    InputAction(std::vector<uint8_t> req_keys,
                 void (*function)(void*),
                 void* context = nullptr,
                 bool continuous = false);
@@ -40,12 +31,12 @@ class InputAction {
     void update();
 };
 
-class UserInput {
+class Dispatcher {
     std::vector<InputAction> actions;
 
    public:
-    UserInput();
-    ~UserInput();
+    Dispatcher();
+    ~Dispatcher();
 
     void add_action(InputAction action);
 

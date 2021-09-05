@@ -1,6 +1,7 @@
 #include "menuCtrl.h"
 #include <cstdint>
 #include <utility>
+#include "../interface/keyboard.h"
 #include "../interface/mouse.h"
 
 #define CENTER \
@@ -17,8 +18,8 @@ static int s_window_h = 2160;
 static int s_window_x = 0;
 static int s_window_y = 0;
 
-static int s_inv_offset_x = 0;
-static int s_inv_offset_y = 0;
+static int s_inv_offset_x = SLOT_SIZE / 2;
+static int s_inv_offset_y = SLOT_SIZE * -4;
 
 void toScreen(const std::pair<uint16_t, uint16_t>& percent,
               const std::pair<int, int>& pixels,
@@ -46,9 +47,31 @@ void MenuCtrl::selectInv(int x, int y) {
     Mouse::move_to(res.first, res.second);
 }
 
+void MenuCtrl::dropItem(bool all) {
+    if (all) {
+        Keyboard::press(Keyboard::CONTROL);
+        Keyboard::input('Q');
+        Keyboard::release(Keyboard::CONTROL);
+    } else {
+        Keyboard::input('Q');
+    }
+}
+
+void MenuCtrl::takeItem(bool quick) {
+    if (quick) {
+        Keyboard::press(Keyboard::SHIFT);
+        Mouse::click(Mouse::LEFT);
+        Keyboard::release(Keyboard::SHIFT);
+    } else {
+        Mouse::click(Mouse::LEFT);
+    }
+}
+
 void MenuCtrl::initialize(int ui_scale) {
     s_ui_scale = ui_scale;
+}
 
-    s_inv_offset_y = SLOT_SIZE / 2;
-    s_inv_offset_x = -SLOT_SIZE * 4;
+void MenuCtrl::changeOffset(int offset_x, int offset_y) {
+    s_inv_offset_x = offset_x * SLOT_SIZE;
+    s_inv_offset_y = offset_y * SLOT_SIZE;
 }

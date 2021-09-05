@@ -6,41 +6,43 @@
 
 #define BUTTONS_MAX 3
 
+namespace Mouse {
+
 // SETTERS
 
 static const std::map<uint8_t, uint16_t> s_event_up = {
-    {Mouse::LEFT, MOUSEEVENTF_LEFTUP},
-    {Mouse::RIGHT, MOUSEEVENTF_RIGHTUP},
-    {Mouse::MIDDLE, MOUSEEVENTF_MIDDLEUP},
+    {LEFT, MOUSEEVENTF_LEFTUP},
+    {RIGHT, MOUSEEVENTF_RIGHTUP},
+    {MIDDLE, MOUSEEVENTF_MIDDLEUP},
 };
 
 static const std::map<uint8_t, uint16_t> s_event_down = {
-    {Mouse::LEFT, MOUSEEVENTF_LEFTDOWN},
-    {Mouse::RIGHT, MOUSEEVENTF_RIGHTDOWN},
-    {Mouse::MIDDLE, MOUSEEVENTF_MIDDLEDOWN},
+    {LEFT, MOUSEEVENTF_LEFTDOWN},
+    {RIGHT, MOUSEEVENTF_RIGHTDOWN},
+    {MIDDLE, MOUSEEVENTF_MIDDLEDOWN},
 };
 
 // click the mouse button
-void Mouse::click(const uint8_t btn) {
-    mouse_event(s_event_up.at(btn) | s_event_up.at(btn), 0, 0, 0, 0);
+void click(const uint8_t btn) {
+    mouse_event(s_event_down.at(btn) | s_event_up.at(btn), 0, 0, 0, 0);
 }
 
 // press the mouse button
-void Mouse::press(const uint8_t btn) {
+void press(const uint8_t btn) {
     mouse_event(s_event_down.at(btn), 0, 0, 0, 0);
 }
 
 // release the mouse button
-void Mouse::release(const uint8_t btn) {
+void release(const uint8_t btn) {
     mouse_event(s_event_up.at(btn), 0, 0, 0, 0);
 }
 
 // |dx| |dy| are a 16 bit int from top left to bottom right,
 // where 2^16, 2^16 would be the bottom right as percentages
-void Mouse::move(const uint16_t dx, const uint16_t dy) {
+void move(const uint16_t dx, const uint16_t dy) {
     mouse_event(MOUSEEVENTF_MOVE, dx, dy, 0, 0);
 }
-void Mouse::move_to(const uint16_t x, const uint16_t y) {
+void move_to(const uint16_t x, const uint16_t y) {
     mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x, y, 0, 0);
 }
 
@@ -48,12 +50,13 @@ void Mouse::move_to(const uint16_t x, const uint16_t y) {
 
 static std::bitset<BUTTONS_MAX> processed;
 static std::bitset<BUTTONS_MAX> btnDown;
+static bool recording = false;
 
-bool Mouse::isDown(const uint8_t btn) {
+bool isDown(const uint8_t btn) {
     return btnDown.test(btn);
 }
 
-bool Mouse::isPressed(const uint8_t btn) {
+bool isPressed(const uint8_t btn) {
     if (!processed.test(btn)) {
         processed.set(btn);
         return btnDown.test(btn);
@@ -61,7 +64,7 @@ bool Mouse::isPressed(const uint8_t btn) {
     return false;
 }
 
-void Mouse::update() {
+void update() {
     processed.reset();
     btnDown.reset();
 
@@ -69,3 +72,5 @@ void Mouse::update() {
         continue;
     }
 }
+
+}  // namespace Mouse

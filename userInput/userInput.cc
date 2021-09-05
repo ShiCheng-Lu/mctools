@@ -35,47 +35,47 @@ void InputAction::update() {
 }
 
 // UserInput
-UserInput::UserInput() {}
-UserInput::~UserInput() {}
+// UserInput::UserInput() {}
+// UserInput::~UserInput() {}
 
-void UserInput::add_action(InputAction action) {
-    actions.push_back(action);
-}
+// void UserInput::add_action(InputAction action) {
+//     actions.push_back(action);
+// }
 
-void UserInput::start_listener() {}
+// void UserInput::start_listener() {}
 
-void UserInput::end_listener() {}
-#include <iostream>
-std::string UserInput::get_typed_string(const char until) {
-    // clear any queued key events
-    for (byte i = 0; i < 'Z'; ++i) {
-        GetAsyncKeyState(i);
-    }
+// void UserInput::end_listener() {}
+// #include <iostream>
+// std::string UserInput::get_typed_string(const char until) {
+//     // clear any queued key events
+//     for (byte i = 0; i < 'Z'; ++i) {
+//         GetAsyncKeyState(i);
+//     }
 
-    BYTE kb_state[256];
-    GetKeyboardState(kb_state);
+//     BYTE kb_state[256];
+//     GetKeyboardState(kb_state);
 
-    std::string result = "";
-    while (true) {
-        for (byte i = 0; i < 'Z'; ++i) {
-            SHORT state = GetAsyncKeyState(i);
-            if (!(state & 1)) {
-                continue;
-            }
-            // key was pressed
-            if (i == until) {
-                return result;
-            } else if (i == VK_BACK) {
-                // handle for backspace char
-                if (result.length() == 0) {
-                    return result;
-                }
-                result.pop_back();
-            } else {
-                WORD buffer[2];
-                ToAscii(i, 0, kb_state, buffer, 0);
-                result.push_back(buffer[0]);
-            }
-        }
-    }
-}
+//     std::string result = "";
+//     while (true) {
+//         for (byte i = 0; i < 'Z'; ++i) {
+//             SHORT state = GetAsyncKeyState(i);
+//             if (!(state & 1)) {
+//                 continue;
+//             }
+//             // key was pressed
+//             if (i == until) {
+//                 return result;
+//             } else if (i == VK_BACK) {
+//                 // handle for backspace char
+//                 if (result.length() == 0) {
+//                     return result;
+//                 }
+//                 result.pop_back();
+//             } else {
+//                 WORD buffer[2];
+//                 ToAscii(i, 0, kb_state, buffer, 0);
+//                 result.push_back(buffer[0]);
+//             }
+//         }
+//     }
+// }
