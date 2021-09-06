@@ -3,6 +3,7 @@
 
 #include <thread>
 
+#include "gameCtrl/inventory.h"
 #include "gameCtrl/menuCtrl.h"
 #include "gameCtrl/moveCtrl.h"
 
@@ -12,37 +13,32 @@
 #include "interface/screen.h"
 
 #include <windows.h>
-#include <wingdi.h>
+#include <bitset>
+#include <chrono>
+#include <thread>
+
+void takeAllListener() {
+    if (Keyboard::isDown(Keyboard::SHIFT) && Keyboard::isDown('R')) {
+        Inventory inv;
+        inv.takeAll();
+        MenuCtrl::openInventory(); // also closes the inventory (same button)
+    }
+}
 
 int main(int argc, char* argv[]) {
-    // capture();
+    auto last = std::chrono::system_clock::now();
 
-    HDC scr = GetDC(nullptr);
+    auto ms_per_frame = std::chrono::milliseconds{166};
 
-    std::cout << GetDeviceCaps(scr, HORZRES) << std::endl
-              << GetDeviceCaps(scr, HORZSIZE) << std::endl
-              << GetSystemMetrics(SM_XVIRTUALSCREEN) << std::endl
-              << GetSystemMetrics(SM_YVIRTUALSCREEN) << std::endl;
+    while (!Keyboard::isDown('\e')) {
+        takeAllListener();
 
-    // std::this_thread::sleep_for(std::chrono::seconds(3));
-    // MenuCtrl::initialize(5);
-
-    // Keyboard::press(Keyboard::SHIFT);
-    // for (int y = 0; y < 3; ++y) {
-    //     for (int x = 0; x < 9; ++x) {
-    //         MenuCtrl::selectInv(x, y);
-    //         MenuCtrl::takeItem();
-    //         std::this_thread::sleep_for(std::chrono::milliseconds(37));
-    //     }
-    // }
-    // Keyboard::release(Keyboard::SHIFT);
-
-    // Mouse::move_to(1 << 15, 1 << 15);
-
-    // for (int i = 0; i < 50; ++i) {
-    //     MoveCtrl::moveForward(1);
-    //     std::this_thread::sleep_for(std::chrono::seconds(1));
-    // }
-    // MoveCtrl::moveForward(100);
-    // std::this_thread::sleep_for(std::chrono::seconds(30));
+        Keyboard::update();
+        Mouse::update();
+        auto now = std::chrono::system_clock::now();
+        if (now - last < ms_per_frame) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            last = now;
+        }
+    }
 }

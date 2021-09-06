@@ -8,7 +8,7 @@
     { 0x8000, 0x8000 }
 #define SLOT_SIZE 18
 
-static int s_ui_scale = 1;
+static int s_ui_scale = 5;
 static int s_screen_w = 3840;
 static int s_screen_h = 2160;
 
@@ -36,7 +36,9 @@ void toScreen(const std::pair<uint16_t, uint16_t>& percent,
     result.second += 0x10000 * pixels.second / s_screen_h;
 }
 
-void MenuCtrl::openInventory() {}
+void MenuCtrl::openInventory() {
+    Keyboard::click('E');
+}
 
 void MenuCtrl::selectInv(int x, int y) {
     std::pair<int, int> offset = {
@@ -50,10 +52,10 @@ void MenuCtrl::selectInv(int x, int y) {
 void MenuCtrl::dropItem(bool all) {
     if (all) {
         Keyboard::press(Keyboard::CONTROL);
-        Keyboard::input('Q');
+        Keyboard::click('Q');
         Keyboard::release(Keyboard::CONTROL);
     } else {
-        Keyboard::input('Q');
+        Keyboard::click('Q');
     }
 }
 
@@ -71,7 +73,7 @@ void MenuCtrl::initialize(int ui_scale) {
     s_ui_scale = ui_scale;
 }
 
-void MenuCtrl::changeOffset(int offset_x, int offset_y) {
-    s_inv_offset_x = offset_x * SLOT_SIZE;
-    s_inv_offset_y = offset_y * SLOT_SIZE;
+void MenuCtrl::changeOffset(float offset_x, float offset_y) {
+    s_inv_offset_x = (int) (offset_x * SLOT_SIZE);
+    s_inv_offset_y = (int) (offset_y * SLOT_SIZE);
 }
