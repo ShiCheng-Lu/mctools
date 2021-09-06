@@ -45,6 +45,10 @@
         "thread": "cpp",
         "typeinfo": "cpp",
         "bitset": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "*.dlg": "cpp",
+        "cstring": "cpp",
+        "iomanip": "cpp",
+        "xstring": "cpp"
     }
 }

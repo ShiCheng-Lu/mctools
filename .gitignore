@@ -1,0 +1,6 @@
+*.o
+*.d
+*.ilk
+*.obj
+*.pdb
+.vscode
