@@ -46,7 +46,7 @@ void move_to(const uint16_t x, const uint16_t y) {
 
 // GETTERS
 
-static std::bitset<3> processed;
+static std::bitset<3> pressed;
 static std::bitset<3> btnDown;
 static bool recording = false;
 
@@ -55,8 +55,8 @@ bool isDown(const uint8_t btn) {
 }
 
 bool isPressed(const uint8_t btn) {
-    if (!processed.test(btn)) {
-        processed.set(btn);
+    if (!pressed.test(btn)) {
+        pressed.set(btn);
         return btnDown.test(btn);
     }
     return false;
@@ -68,17 +68,17 @@ void update() {
     if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
         btnDown.set(LEFT);
     } else {
-        processed.reset(LEFT);
+        pressed.reset(LEFT);
     }
     if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
         btnDown.set(RIGHT);
     } else {
-        processed.reset(RIGHT);
+        pressed.reset(RIGHT);
     }
     if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
         btnDown.set(MIDDLE);
     } else {
-        processed.reset(MIDDLE);
+        pressed.reset(MIDDLE);
     }
 }
 

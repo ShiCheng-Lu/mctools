@@ -3,13 +3,6 @@
 #include <windows.h>
 #include <wingdi.h>
 
-std::ostream& operator<<(std::ostream& out, Color color) {
-    out << std::hex;
-    out << (int)color;
-    out << std::dec;
-    return out;
-}
-
 static int s_screen_count = 0;
 static HDC s_screenDC;
 

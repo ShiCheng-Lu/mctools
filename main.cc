@@ -22,20 +22,32 @@ int main(int argc, char* argv[]) {
     auto ms_per_frame = std::chrono::milliseconds{166};
     // Keyboard::update();
     // Mouse::update();
+    Screen sc{"Minecraft"};
 
     Dispatcher dispatcher;
     dispatcher.registerCallback(
-        [](void* _) {
-            return Keyboard::isDown('A') && Keyboard::isDown('S') &&
-                   Keyboard::isDown('D');
+        [](void* psc) {
+            Screen* sc = (Screen*)psc;
+            return Keyboard::isPressed(' ') &&
+                   sc->get_pixel(1920, 1080) == 0xc6c6c6;
         },
         [](void* _) {
-            Keyboard::press(Keyboard::SHIFT);
-            Inventory inv;
+            Chest inv;
             inv.takeAll();
-            MenuCtrl::openInventory();
-            Keyboard::release(Keyboard::SHIFT);
-        });
+        },
+        &sc);
+
+    dispatcher.registerCallback(
+        [](void* psc) {
+            Screen* sc = (Screen*)psc;
+            return Keyboard::isPressed(' ') &&
+                   sc->get_pixel(1920, 1060) == 0x8b8b8b;
+        },
+        [](void* _) {
+            DoubleChest inv;
+            inv.takeAll();
+        },
+        &sc);
 
     while (!Keyboard::isDown('\e')) {
         dispatcher.update();

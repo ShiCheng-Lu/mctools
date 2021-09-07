@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <bitset>
 
-#define KEY_MAX VK_OEM_2
+#define KEY_MAX 0xff
 
 namespace Keyboard {
 
@@ -37,7 +37,7 @@ void release(const uint8_t key) {
 
 // GETTERS
 
-static std::bitset<KEY_MAX> processed = 0;
+static std::bitset<KEY_MAX> pressed = 0;
 static std::bitset<KEY_MAX> keyDown = 0;
 
 bool isDown(const uint8_t key) {
@@ -47,21 +47,20 @@ bool isDown(const uint8_t key) {
 
 bool isPressed(const uint8_t key) {
     uint8_t key_id = get_id(key);
-    if (!processed.test(key_id)) {
-        processed.set(key_id);
-        return keyDown.test(key_id);
-    }
-    return false;
+    return pressed.test(key_id);
 }
 
 void update() {
     keyDown.reset();
+    pressed.reset();
 
     for (int key = 0; key < KEY_MAX; ++key) {
-        if (GetAsyncKeyState(key)) {
+        SHORT state = GetAsyncKeyState(key);
+        if (state & 0x8000) {
             keyDown.set(key);
-        } else {
-            processed.reset(key);
+        }
+        if (state & 0x0001) {
+            pressed.set(key);
         }
     }
 }

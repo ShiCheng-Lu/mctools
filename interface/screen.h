@@ -1,7 +1,7 @@
 #ifndef _SCREEN_H_
 #define _SCREEN_H_
 
-// #include <../coord.h>
+#include "../coord.h"
 #include <windows.h>
 #include <cstdint>
 #include <iostream>
@@ -10,18 +10,6 @@
 #include <vector>
 
 typedef uint32_t Color;
-
-class Point {
-   public:
-    int x, y;
-};
-
-class Coord {
-   public:
-    int x, y, z;
-};
-
-std::ostream& operator<<(std::ostream& out, Color colour);
 
 // enable screen shots and watching the screen
 class Screen {

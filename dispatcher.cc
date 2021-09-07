@@ -10,7 +10,9 @@ Dispatcher::TrigActPair::TrigActPair(Trigger t, Action a, void* tc, void* ac)
       thread{nullptr} {}
 
 Dispatcher::TrigActPair::~TrigActPair() {
-    thread->join();
+    if (thread) {
+        thread->join();
+    }
 }
 
 int Dispatcher::registerCallback(Trigger t, Action a, void* tc, void* ac) {

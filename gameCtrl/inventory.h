@@ -32,6 +32,9 @@ class Chest : public Inventory {
     Chest() : Inventory{9, 3, -4, -3} {};
 };
 
-class DoubleChest : public Inventory {};
+class DoubleChest : public Inventory {
+   public:
+    DoubleChest() : Inventory{9, 6, -4, -4.5f} {};
+};
 
 #endif

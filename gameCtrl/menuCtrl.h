@@ -3,8 +3,6 @@
 
 namespace MenuCtrl {
 
-void openInventory();
-
 void selectInv(int x, int y);
 
 void initialize(int ui_scale);
@@ -15,6 +13,8 @@ void changeOffset(float offset_x, float offset_y);
 void dropItem(bool all = true);
 // take the selected item
 void takeItem(bool quick = true);
+
+bool invOpen();
 
 }  // namespace MenuCtrl
 

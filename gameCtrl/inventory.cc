@@ -26,6 +26,8 @@ void Inventory::takeAll() {
     Mouse::release(Mouse::LEFT);
     Mouse::release(Mouse::RIGHT);
 
+    Keyboard::press(Keyboard::SHIFT);
+
     MenuCtrl::changeOffset(offset_x, offset_y);
 
     for (int y = 0; y < size_y; ++y) {
@@ -35,6 +37,8 @@ void Inventory::takeAll() {
             Delay::ms(17);
         }
     }
+    Keyboard::click('E');
+    Keyboard::release(Keyboard::SHIFT);
 }
 void Inventory::dropAll() {
     MenuCtrl::changeOffset(offset_x, offset_y);
