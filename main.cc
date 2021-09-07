@@ -35,10 +35,7 @@ void GetDesktopResolution(int& horizontal, int& vertical) {
 }
 
 int main(int argc, char* argv[]) {
-
     int x, y;
-
-    HWND primary = FindWindow(NULL, NULL);
 
     GetDesktopResolution(x, y);
     std::cout << x << ' ' << y;
