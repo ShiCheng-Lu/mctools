@@ -23,7 +23,7 @@ Screen::~Screen() {
 }
 
 Color Screen::get_pixel(int x, int y) {
-    POINT p = {x, y};
-    ClientToScreen(window, &p);
-    return GetPixel(s_screenDC, p.x, p.y);
+    // POINT p = {x, y};
+    // ClientToScreen(window, &p);
+    return GetPixel(s_screenDC, x, y);
 }

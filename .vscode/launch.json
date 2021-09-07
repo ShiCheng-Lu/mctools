@@ -23,7 +23,7 @@
                     "ignoreFailures": true
                 }
             ],
-            "preLaunchTask": "mt.exe: add manifest"
+            "preLaunchTask": "Manifest: add"
         }
     ]
 }
