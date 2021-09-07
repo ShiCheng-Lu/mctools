@@ -16,31 +16,44 @@
 
 #include "dispatcher.h"
 
-class InvOpenButton : public Trigger {
-    uint8_t button;  // button is pressed
-
-    Point point;  // point has color
-    Color color;
+class TakeAllFromInv : public Action {
     Screen& screen;
+    int type = 0;
 
    public:
-    InvOpenButton(uint8_t button, Point point, Color color, Screen& screen)
-        : button{button}, point{point}, color{color}, screen{screen} {}
-    bool operator()() override {
-        if (Keyboard::isPressed(button) &&
-            screen.get_pixel(point.x, point.y) == color) {
+    TakeAllFromInv(Screen& screen) : screen{screen}, type{0} {}
+
+    bool condition() override {
+        if (!Keyboard::isPressed(' ')) {
+            return false;
+        }
+        Color c = screen.get_pixel(1920, 1080);
+        if (c == 0xc6c6c6) {
+            type = 1;
+            return true;
+        } else if (c == 0x8b8b8b) {
+            type = 1;
             return true;
         }
         return false;
     }
-};
+    void operation() override {
+        switch (type) {
+            case 0: {
+                Chest c;
+                c.takeAll();
+                return;
+            }
 
-class TakeAllFromInv : public Action {
-    Inventory& inv;
-
-   public:
-    TakeAllFromInv(Inventory inv) : inv{inv} {}
-    void operator()() override { inv.takeAll(); }
+            case 1: {
+                DoubleChest c;
+                c.takeAll();
+                return;
+            }
+            default:
+                return;
+        }
+    }
 };
 
 int main(int argc, char* argv[]) {
@@ -55,13 +68,8 @@ int main(int argc, char* argv[]) {
     int y = 1080;
 
     Dispatcher dispatcher;
-    InvOpenButton chestOpened{' ', {x, y}, 0xc6c6c6, sc};
-    TakeAllFromInv takeAllFromChest{Chest{}};
-    dispatcher.registerCallback(&chestOpened, &takeAllFromChest);
-
-    InvOpenButton doubleChestOpened{' ', {x, y}, 0x8b8b8b, sc};
-    TakeAllFromInv takeAllDoubleChest{DoubleChest{}};
-    dispatcher.registerCallback(&doubleChestOpened, &takeAllDoubleChest);
+    TakeAllFromInv steal{sc};
+    dispatcher.registerAction(steal);
 
     while (!Keyboard::isDown('\e')) {
         dispatcher.update();

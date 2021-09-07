@@ -1,37 +1,27 @@
 #ifndef _DISPATCHER_H_
 #define _DISPATCHER_H_
 
-#include <memory>
 #include <thread>
 #include <vector>
 
-struct Trigger {
-    virtual bool operator()() { return false; }
-};
-
 struct Action {
-    virtual void operator()() {}
+    std::thread thread;
+    bool active;
+    int _id;
+    virtual bool condition() { return false; }
+    virtual void operation() {}
 };
 
 class Dispatcher {
-    struct TrigActPair {
-        Trigger* trigger;
-        Action* action;
-
-        std::thread* thread;
-
-        TrigActPair(Trigger* t, Action* a);
-        ~TrigActPair();
-    };
-
-    std::vector<TrigActPair> pairs;
+    std::vector<Action&> actions;
+    int _id_max;
 
    public:
-    int registerCallback(Trigger* t, Action* a);
+    int registerAction(Action& a);
 
-    int cancelCallback(Trigger* t);
+    int cancelAction(Action& a);
 
-    int cancelCallback(int trigger_id);
+    int cancelAction(int trigger_id);
 
     void update();
 };
