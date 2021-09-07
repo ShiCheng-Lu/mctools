@@ -1,5 +1,18 @@
 {
 	"version": "2.0.0",
+	"windows": {
+		"options": {
+			"shell": {
+				"executable": "cmd.exe",
+				"args": [
+					"/C",
+					// The path to VsDevCmd.bat depends on the version of Visual Studio you have installed.
+					"\"C:/Program Files (x86)/Microsoft Visual Studio/2019/BuildTools/Common7/Tools/VsDevCmd.bat\"",
+					"&&"
+				]
+			}
+		}
+	},
 	"tasks": [
 		{
 			"type": "shell",
@@ -11,6 +24,33 @@
 			],
 			"group": {
 				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"label": "mt.exe: add manifest",
+			"command": "mt.exe",
+			"args": [
+				"-manifest",
+				"mctools.manifest",
+				"-outputresource:mctools.exe;1"
+			],
+			"dependsOn": [
+				"C/C++: g++.exe build active file"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"type": "shell",
+			"label": "launch",
+			"command": "mctools",
+			"problemMatcher": [],
+			"group": {
+				"kind": "test",
 				"isDefault": true
 			}
 		}

@@ -17,28 +17,29 @@
 #include <chrono>
 #include <thread>
 
-void takeAllListener() {
-    if (Keyboard::isDown(Keyboard::SHIFT) && Keyboard::isDown('R')) {
-        Inventory inv;
-        inv.takeAll();
-        MenuCtrl::openInventory(); // also closes the inventory (same button)
-    }
+void GetDesktopResolution(int& horizontal, int& vertical) {
+    // RECT desktop;
+    // // Get a handle to the desktop window
+    // const HWND hDesktop = GetDesktopWindow();
+    // // Get the size of screen to the variable desktop
+    // GetWindowRect(hDesktop, &desktop);
+    // horizontal = desktop.right;
+    // vertical = desktop.bottom;
+
+    // HMONITOR primary = MonitorFromPoint({0, 0}, MONITOR_DEFAULTTONEAREST);
+    // MONITORINFO info{.cbSize = sizeof(MONITORINFO)};
+    // std::cout << GetMonitorInfo(primary, &info) << std::endl;
+
+    horizontal = GetSystemMetrics(SM_CXSCREEN);
+    vertical = GetSystemMetrics(SM_CYSCREEN);
 }
 
 int main(int argc, char* argv[]) {
-    auto last = std::chrono::system_clock::now();
 
-    auto ms_per_frame = std::chrono::milliseconds{166};
+    int x, y;
 
-    while (!Keyboard::isDown('\e')) {
-        takeAllListener();
+    HWND primary = FindWindow(NULL, NULL);
 
-        Keyboard::update();
-        Mouse::update();
-        auto now = std::chrono::system_clock::now();
-        if (now - last < ms_per_frame) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            last = now;
-        }
-    }
+    GetDesktopResolution(x, y);
+    std::cout << x << ' ' << y;
 }
