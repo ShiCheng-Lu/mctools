@@ -1,7 +1,9 @@
+#include <windows.h>
+#include <bitset>
+#include <chrono>
 #include <iostream>
-#include <vector>
-
 #include <thread>
+#include <vector>
 
 #include "gameCtrl/inventory.h"
 #include "gameCtrl/menuCtrl.h"
@@ -12,27 +14,31 @@
 #include "interface/mouse.h"
 #include "interface/screen.h"
 
-#include <windows.h>
-#include <bitset>
-#include <chrono>
-#include <thread>
-
-void takeAllListener() {
-    if (Keyboard::isDown(Keyboard::SHIFT) && Keyboard::isDown('R')) {
-        Inventory inv;
-        inv.takeAll();
-        MenuCtrl::openInventory(); // also closes the inventory (same button)
-    }
-}
+#include "dispatcher.h"
 
 int main(int argc, char* argv[]) {
     auto last = std::chrono::system_clock::now();
 
     auto ms_per_frame = std::chrono::milliseconds{166};
+    // Keyboard::update();
+    // Mouse::update();
+
+    Dispatcher dispatcher;
+    dispatcher.registerCallback(
+        [](void* _) {
+            return Keyboard::isDown('A') && Keyboard::isDown('S') &&
+                   Keyboard::isDown('D');
+        },
+        [](void* _) {
+            Keyboard::press(Keyboard::SHIFT);
+            Inventory inv;
+            inv.takeAll();
+            MenuCtrl::openInventory();
+            Keyboard::release(Keyboard::SHIFT);
+        });
 
     while (!Keyboard::isDown('\e')) {
-        takeAllListener();
-
+        dispatcher.update();
         Keyboard::update();
         Mouse::update();
         auto now = std::chrono::system_clock::now();

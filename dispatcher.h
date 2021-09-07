@@ -1,21 +1,33 @@
 #ifndef _DISPATCHER_H_
 #define _DISPATCHER_H_
 
-#include <vector>
+#include <memory>
 #include <thread>
+#include <vector>
 
 typedef bool (*Trigger)(void* context);
 typedef void (*Action)(void* context);
 
 class Dispatcher {
-    std::vector<Trigger> triggers;
-    std::vector<Action> actions;
-    std::vector<std::thread> threads;
+    struct TrigActPair {
+        Trigger trigger;
+        Action action;
+        void* trigger_context;
+        void* action_context;
+
+        std::thread* thread;
+
+        TrigActPair(Trigger t, Action a, void* tc, void* ac);
+        ~TrigActPair();
+    };
+
+    std::vector<TrigActPair> pairs;
 
    public:
-    Dispatcher();
-
-    int registerCallback(Trigger t, void* tc, Action a, void* ac, bool threaded = true);
+    int registerCallback(Trigger t,
+                         Action a,
+                         void* tc = nullptr,
+                         void* ac = nullptr);
 
     int cancelCallback(Trigger t);
 
