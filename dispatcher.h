@@ -5,31 +5,33 @@
 #include <thread>
 #include <vector>
 
-typedef bool (*Trigger)(void* context);
-typedef void (*Action)(void* context);
+struct Trigger {
+    virtual bool operator()() { return false; }
+};
+
+struct Action {
+    virtual void operator()() {}
+};
 
 class Dispatcher {
     struct TrigActPair {
-        Trigger trigger;
-        Action action;
-        void* trigger_context;
-        void* action_context;
+        Trigger* trigger;
+        Action* action;
 
         std::thread* thread;
 
-        TrigActPair(Trigger t, Action a, void* tc, void* ac);
+        TrigActPair(Trigger* t, Action* a);
         ~TrigActPair();
     };
 
     std::vector<TrigActPair> pairs;
 
    public:
-    int registerCallback(Trigger t,
-                         Action a,
-                         void* tc = nullptr,
-                         void* ac = nullptr);
+    int registerCallback(Trigger* t, Action* a);
 
-    int cancelCallback(Trigger t);
+    int cancelCallback(Trigger* t);
+
+    int cancelCallback(int trigger_id);
 
     void update();
 };
