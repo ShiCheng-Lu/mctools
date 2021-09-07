@@ -15,11 +15,15 @@ typedef uint32_t Color;
 class Screen {
     HWND window;
 
+    int top, left;
+    int width, height;
+
    public:
     Screen(std::string title);
     ~Screen();
 
-    Color get_pixel(int x, int y);
+    Color get_pixel(const int x, const int y);
+    Color get_pixel(const Point& p);
 
     std::vector<std::vector<Color>> get_area();
 
