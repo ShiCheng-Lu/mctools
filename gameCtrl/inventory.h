@@ -3,18 +3,23 @@
 
 #include <vector>
 
-class Item;
+// class Item;
 
 class Inventory {
+   protected:
     const int size_x;
     const int size_y;
 
     const float offset_x;
     const float offset_y;
 
-    std::vector<std::vector<Item>> content;
+    // std::vector<std::vector<Item>> content;
 
    public:
+    Inventory(int size_x, int size_y, float offset_x, float offset_y);
+    Inventory();
+    ~Inventory();
+
     void takeItem(int x, int y, bool quick = true);
     void dropItem(int x, int y, bool all = true);
 
@@ -23,13 +28,13 @@ class Inventory {
 };
 
 class Chest : public Inventory {
-    const int size_x = 9;
-    const int size_y = 3;
-
-    const float offset_x = -3;
-    const float offset_y = -4;
+   public:
+    Chest() : Inventory{9, 3, -4, -3} {};
 };
 
-class DoubleChest : public Inventory {};
+class DoubleChest : public Inventory {
+   public:
+    DoubleChest() : Inventory{9, 6, -4, -4.5f} {};
+};
 
 #endif

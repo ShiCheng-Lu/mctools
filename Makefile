@@ -1,5 +1,3 @@
-# !include makefile.inc
-
 CXX=g++ 
 CXXFLAGS=-std=c++14 -Wall -O -g -MMD -Werror=vla # use -MMD to generate dependencies
 SOURCES=$(wildcard *.cc) $(wildcard */*.cc) # list of all .cc files in the current directory
@@ -14,13 +12,9 @@ LDLIBS= -lgdi32
 # Note that the LIBFLAGS must come last in the command
 $(EXEC): $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(EXEC) $(LDLIBS)
-    # $(_VC_MANIFEST_EMBED_EXE)
 
 -include ${DEPENDS}
 
 .PHONY: clean
 clean:
 	del $(subst /,\,$(OBJECTS)) $(subst /,\,$(DEPENDS))
-#     $(_VC_MANIFEST_CLEAN)
-
-# !include makefile.targ.inc

@@ -5,6 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include "gameCtrl/inventory.h"
 
 struct Coord {
     int x, y, z;
@@ -18,7 +19,7 @@ struct Item {
 
 class Player {
     Coord location;
-    std::vector<std::vector<Item>> inventory;
+    Inventory inventory;
 
     int heightMovement;
     

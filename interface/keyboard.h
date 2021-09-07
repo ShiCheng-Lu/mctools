@@ -13,7 +13,7 @@ const uint8_t CONTROL = 0x11;
 const uint8_t SHIFT = 0x10;
 
 // simulate keyboard inputs
-void input(const uint8_t key);
+void click(const uint8_t key);
 
 void press(const uint8_t key);
 

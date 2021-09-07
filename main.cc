@@ -1,8 +1,11 @@
+#include <windows.h>
+#include <bitset>
+#include <chrono>
 #include <iostream>
+#include <thread>
 #include <vector>
 
-#include <thread>
-
+#include "gameCtrl/inventory.h"
 #include "gameCtrl/menuCtrl.h"
 #include "gameCtrl/moveCtrl.h"
 
@@ -11,38 +14,49 @@
 #include "interface/mouse.h"
 #include "interface/screen.h"
 
-#include <windows.h>
-#include <wingdi.h>
+#include "dispatcher.h"
 
 int main(int argc, char* argv[]) {
-    // capture();
+    auto last = std::chrono::system_clock::now();
 
-    HDC scr = GetDC(nullptr);
+    auto ms_per_frame = std::chrono::milliseconds{166};
+    // Keyboard::update();
+    // Mouse::update();
+    Screen sc{"Minecraft"};
 
-    std::cout << GetDeviceCaps(scr, HORZRES) << std::endl
-              << GetDeviceCaps(scr, HORZSIZE) << std::endl
-              << GetSystemMetrics(SM_XVIRTUALSCREEN) << std::endl
-              << GetSystemMetrics(SM_YVIRTUALSCREEN) << std::endl;
+    Dispatcher dispatcher;
+    dispatcher.registerCallback(
+        [](void* psc) {
+            Screen* sc = (Screen*)psc;
+            return Keyboard::isPressed(' ') &&
+                   sc->get_pixel(1920, 1080) == 0xc6c6c6;
+        },
+        [](void* _) {
+            Chest inv;
+            inv.takeAll();
+        },
+        &sc);
 
-    // std::this_thread::sleep_for(std::chrono::seconds(3));
-    // MenuCtrl::initialize(5);
+    dispatcher.registerCallback(
+        [](void* psc) {
+            Screen* sc = (Screen*)psc;
+            return Keyboard::isPressed(' ') &&
+                   sc->get_pixel(1920, 1060) == 0x8b8b8b;
+        },
+        [](void* _) {
+            DoubleChest inv;
+            inv.takeAll();
+        },
+        &sc);
 
-    // Keyboard::press(Keyboard::SHIFT);
-    // for (int y = 0; y < 3; ++y) {
-    //     for (int x = 0; x < 9; ++x) {
-    //         MenuCtrl::selectInv(x, y);
-    //         MenuCtrl::takeItem();
-    //         std::this_thread::sleep_for(std::chrono::milliseconds(37));
-    //     }
-    // }
-    // Keyboard::release(Keyboard::SHIFT);
-
-    // Mouse::move_to(1 << 15, 1 << 15);
-
-    // for (int i = 0; i < 50; ++i) {
-    //     MoveCtrl::moveForward(1);
-    //     std::this_thread::sleep_for(std::chrono::seconds(1));
-    // }
-    // MoveCtrl::moveForward(100);
-    // std::this_thread::sleep_for(std::chrono::seconds(30));
+    while (!Keyboard::isDown('\e')) {
+        dispatcher.update();
+        Keyboard::update();
+        Mouse::update();
+        auto now = std::chrono::system_clock::now();
+        if (now - last < ms_per_frame) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            last = now;
+        }
+    }
 }
