@@ -4,8 +4,6 @@
 #include <bitset>
 #include <map>
 
-#define BUTTONS_MAX 3
-
 namespace Mouse {
 
 // SETTERS
@@ -48,8 +46,8 @@ void move_to(const uint16_t x, const uint16_t y) {
 
 // GETTERS
 
-static std::bitset<BUTTONS_MAX> processed;
-static std::bitset<BUTTONS_MAX> btnDown;
+static std::bitset<3> processed;
+static std::bitset<3> btnDown;
 static bool recording = false;
 
 bool isDown(const uint8_t btn) {
@@ -65,11 +63,22 @@ bool isPressed(const uint8_t btn) {
 }
 
 void update() {
-    processed.reset();
     btnDown.reset();
 
-    for (int i = 0; i < BUTTONS_MAX; ++i) {
-        continue;
+    if (GetAsyncKeyState(VK_LBUTTON) & 0x8000) {
+        btnDown.set(LEFT);
+    } else {
+        processed.reset(LEFT);
+    }
+    if (GetAsyncKeyState(VK_RBUTTON) & 0x8000) {
+        btnDown.set(RIGHT);
+    } else {
+        processed.reset(RIGHT);
+    }
+    if (GetAsyncKeyState(VK_MBUTTON) & 0x8000) {
+        btnDown.set(MIDDLE);
+    } else {
+        processed.reset(MIDDLE);
     }
 }
 
