@@ -3,6 +3,8 @@
 
 #include <string>
 
+// NOTE: all strings are uppercase, so start must be uppercase
+
 class StrListener {
     std::string start;
     std::string tracked;
@@ -10,9 +12,11 @@ class StrListener {
    public:
     StrListener(std::string start);
 
-    std::string getString();
+    std::string getString(bool include_start = false);
 
     bool hasContent();
+
+    void clear();
 
     void update();
 };

@@ -13,13 +13,13 @@ struct Action {
 };
 
 class Dispatcher {
-    std::vector<Action&> actions;
+    std::vector<Action*> actions;
     int _id_max;
 
    public:
-    int registerAction(Action& a);
+    int registerAction(Action* a);
 
-    int cancelAction(Action& a);
+    int cancelAction(Action* a);
 
     int cancelAction(int trigger_id);
 

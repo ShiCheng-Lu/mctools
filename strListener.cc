@@ -2,11 +2,14 @@
 
 #include "interface/keyboard.h"
 
-const std::string specialChars{"/"};
+const std::string specialChars{"/\r"};
 
 StrListener::StrListener(std::string start) : start{start} {}
 
-std::string StrListener::getString() {
+std::string StrListener::getString(bool include_start) {
+    if (include_start) {
+        return tracked;
+    }
     if (hasContent()) {
         return tracked.substr(start.size());
     } else {
@@ -17,6 +20,10 @@ std::string StrListener::getString() {
 bool StrListener::hasContent() {
     // if tracked starts with |start|
     return tracked.rfind(start, 0) == 0;
+}
+
+void StrListener::clear() {
+    tracked = "";
 }
 
 void StrListener::update() {
