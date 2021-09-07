@@ -16,8 +16,30 @@
 
 #include "dispatcher.h"
 
+#include <windows.h>
+#include <bitset>
+#include <chrono>
+#include <thread>
+
+void GetDesktopResolution(int& horizontal, int& vertical) {
+    // RECT desktop;
+    // // Get a handle to the desktop window
+    // const HWND hDesktop = GetDesktopWindow();
+    // // Get the size of screen to the variable desktop
+    // GetWindowRect(hDesktop, &desktop);
+    // horizontal = desktop.right;
+    // vertical = desktop.bottom;
+
+    // HMONITOR primary = MonitorFromPoint({0, 0}, MONITOR_DEFAULTTONEAREST);
+    // MONITORINFO info{.cbSize = sizeof(MONITORINFO)};
+    // std::cout << GetMonitorInfo(primary, &info) << std::endl;
+
+    horizontal = GetSystemMetrics(SM_CXSCREEN);
+    vertical = GetSystemMetrics(SM_CYSCREEN);
+}
+
 int main(int argc, char* argv[]) {
-    auto last = std::chrono::system_clock::now();
+    int x, y;
 
     auto ms_per_frame = std::chrono::milliseconds{166};
     // Keyboard::update();
@@ -49,6 +71,7 @@ int main(int argc, char* argv[]) {
         },
         &sc);
 
+    auto last = std::chrono::system_clock::now();
     while (!Keyboard::isDown('\e')) {
         dispatcher.update();
         Keyboard::update();
