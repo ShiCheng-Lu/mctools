@@ -40,7 +40,7 @@ void release(const uint8_t btn) {
 void move(const uint16_t dx, const uint16_t dy) {
     mouse_event(MOUSEEVENTF_MOVE, dx, dy, 0, 0);
 }
-void move_to(const uint16_t x, const uint16_t y) {
+void moveTo(const uint16_t x, const uint16_t y) {
     mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, x, y, 0, 0);
 }
 

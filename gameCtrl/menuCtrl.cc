@@ -1,8 +1,8 @@
 #include "menuCtrl.h"
 #include <cstdint>
 #include <utility>
-#include "../interface/keyboard.h"
-#include "../interface/mouse.h"
+#include "../utils/keyboard.h"
+#include "../utils/mouse.h"
 
 #define CENTER \
     { 0x8000, 0x8000 }
@@ -44,7 +44,7 @@ void selectInv(int x, int y) {
         (y * SLOT_SIZE + s_inv_offset_y) * s_ui_scale};
     std::pair<uint16_t, uint16_t> res;
     toScreen(CENTER, offset, res);
-    Mouse::move_to(res.first, res.second);
+    Mouse::moveTo(res.first, res.second);
 }
 
 void dropItem(bool all) {
