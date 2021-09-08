@@ -9,77 +9,92 @@
 #include "gameCtrl/menuCtrl.h"
 #include "gameCtrl/moveCtrl.h"
 
-#include "interface/bitmap.h"
 #include "interface/keyboard.h"
 #include "interface/mouse.h"
 #include "interface/screen.h"
 
 #include "dispatcher.h"
+#include "strListener.h"
 
-#include <windows.h>
-#include <bitset>
-#include <chrono>
-#include <thread>
+// class TakeAllFromInv : public Action {
+//     Screen& screen;
+//     int type = 0;
 
-void GetDesktopResolution(int& horizontal, int& vertical) {
-    // RECT desktop;
-    // // Get a handle to the desktop window
-    // const HWND hDesktop = GetDesktopWindow();
-    // // Get the size of screen to the variable desktop
-    // GetWindowRect(hDesktop, &desktop);
-    // horizontal = desktop.right;
-    // vertical = desktop.bottom;
+//    public:
+//     TakeAllFromInv(Screen& screen) : screen{screen}, type{0} {}
 
-    // HMONITOR primary = MonitorFromPoint({0, 0}, MONITOR_DEFAULTTONEAREST);
-    // MONITORINFO info{.cbSize = sizeof(MONITORINFO)};
-    // std::cout << GetMonitorInfo(primary, &info) << std::endl;
+//     bool condition() override {
+//         if (!Keyboard::isPressed(' ')) {
+//             return false;
+//         }
+//         Color c = screen.getPixel(screen.getSize() / 2);
+//         std::cout << std::hex << c << std::endl;
 
-    horizontal = GetSystemMetrics(SM_CXSCREEN);
-    vertical = GetSystemMetrics(SM_CYSCREEN);
-}
+//         if (c == 0xc6c6c6) {
+//             type = 0;
+//             return true;
+//         } else if (c == 0xffffff) {
+//             type = 1;
+//             return true;
+//         }
+//         return false;
+//     }
+//     void operation() override {
+//         switch (type) {
+//             case 0: {
+//                 Chest c;
+//                 c.takeAll();
+//                 return;
+//             }
+
+//             case 1: {
+//                 DoubleChest c;
+//                 c.takeAll();
+//                 return;
+//             }
+//             default:
+//                 return;
+//         }
+//     }
+// };
 
 int main(int argc, char* argv[]) {
-    int x, y;
-
-    auto ms_per_frame = std::chrono::milliseconds{166};
+    auto ms_per_frame = std::chrono::milliseconds{200};
     // Keyboard::update();
     // Mouse::update();
-    Screen sc{"Minecraft"};
+    Screen::init();
 
-    Dispatcher dispatcher;
-    dispatcher.registerCallback(
-        [](void* psc) {
-            Screen* sc = (Screen*)psc;
-            return Keyboard::isPressed(' ') &&
-                   sc->get_pixel(1920, 1080) == 0xc6c6c6;
-        },
-        [](void* _) {
-            Chest inv;
-            inv.takeAll();
-        },
-        &sc);
+    Screen::getWindowLoc("Minecraft");
+    Screen::getWindowSize("Minecraft");
 
-    dispatcher.registerCallback(
-        [](void* psc) {
-            Screen* sc = (Screen*)psc;
-            return Keyboard::isPressed(' ') &&
-                   sc->get_pixel(1920, 1060) == 0x8b8b8b;
-        },
-        [](void* _) {
-            DoubleChest inv;
-            inv.takeAll();
-        },
-        &sc);
+    // Screen sc{"Minecraft"};
 
-    auto last = std::chrono::system_clock::now();
-    while (!Keyboard::isDown('\e')) {
-        dispatcher.update();
-        Keyboard::update();
-        Mouse::update();
-        auto now = std::chrono::system_clock::now();
-        if (now - last < ms_per_frame) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            last = now;
-        }
-    }
+    // std::cout << sc.getSize() << std::endl;
+    // std::cout << sc.toScreen({0, 0}) << std::endl;
+
+    // Dispatcher dispatcher;
+    // TakeAllFromInv steal{sc};
+    // dispatcher.registerAction(&steal);
+
+    // StrListener cmdlistener{"/MCTOOLS"};
+
+    // auto last = std::chrono::system_clock::now();
+    // while (!Keyboard::isDown('\e')) {
+    //     cmdlistener.update();
+    //     dispatcher.update();
+
+    //     if (Keyboard::isPressed('\r')) {
+    //         std::cout << cmdlistener.getString();
+    //         cmdlistener.clear();
+    //     }
+
+    //     Keyboard::update();
+    //     Mouse::update();
+
+    //     auto now = std::chrono::system_clock::now();
+    //     if (now - last < ms_per_frame) {
+    //         std::this_thread::sleep_for(now - last);
+    //         last = now;
+    //     }
+    // }
 }

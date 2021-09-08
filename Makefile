@@ -5,7 +5,6 @@ OBJECTS=${SOURCES:.cc=.o}  # .o files depend upon .cc files with same names
 DEPENDS=${OBJECTS:.o=.d}   # .d file is list of dependencies for corresponding .cc file
 EXEC=mctools
 
-
 LDLIBS= -lgdi32
 
 # First target in the makefile is the default target.

@@ -2,34 +2,23 @@
 
 #include <algorithm>
 
-Dispatcher::TrigActPair::TrigActPair(Trigger t, Action a, void* tc, void* ac)
-    : trigger{t},
-      action{a},
-      trigger_context{tc},
-      action_context{ac},
-      thread{nullptr} {}
-
-Dispatcher::TrigActPair::~TrigActPair() {
-    if (thread) {
-        thread->join();
-    }
+int Dispatcher::registerAction(Action* action) {
+    action->_id = _id_max;
+    actions.push_back(action);
+    _id_max++;
+    return _id_max - 1;
 }
 
-int Dispatcher::registerCallback(Trigger t, Action a, void* tc, void* ac) {
-    pairs.emplace_back(t, a, tc, ac);
-    return 0;
-}
-
-int Dispatcher::cancelCallback(Trigger t) {
-    std::remove_if(pairs.begin(), pairs.end(),
-                   [t](auto& p) { return p.trigger == t; });
+int Dispatcher::cancelAction(Action* target) {
+    std::remove(actions.begin(), actions.end(), target);
     return 0;
 }
 
 void Dispatcher::update() {
-    for (auto& p : pairs) {
-        if (p.trigger(p.trigger_context)) {
-            p.thread = new std::thread(p.action, p.action_context);
+    for (auto& action : actions) {
+        if (action->condition()) {
+            action->thread = std::thread(Action::operation, action);
+            action->thread.detach();
         }
     }
 }

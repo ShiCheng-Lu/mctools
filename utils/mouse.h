@@ -4,13 +4,15 @@
 // this module simulate and listen for mouse events
 
 #include <cstdint>
-#include <utility>
+#include "coord.h"
 
 namespace Mouse {
 
 const uint8_t LEFT = 0;
 const uint8_t RIGHT = 1;
 const uint8_t MIDDLE = 2;
+
+void init();
 
 // SETTERS
 
@@ -26,7 +28,10 @@ void release(const uint8_t btn);
 // |dx| |dy| are a 16 bit int from top left to bottom right,
 // where 2^16, 2^16 would be the bottom right as percentages
 void move(const uint16_t dx, const uint16_t dy);
-void move_to(const uint16_t dx, const uint16_t dy);
+void move(const Point point);
+// move to a location
+void moveTo(const uint16_t dx, const uint16_t dy);
+void moveTo(const Point point);
 
 // GETTERS
 
