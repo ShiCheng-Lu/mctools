@@ -1,8 +1,8 @@
 #include "menuCtrl.h"
 #include <cstdint>
 #include <utility>
-#include "../interface/keyboard.h"
-#include "../interface/mouse.h"
+#include "../utils/keyboard.h"
+#include "../utils/mouse.h"
 
 #define CENTER \
     { 0x8000, 0x8000 }

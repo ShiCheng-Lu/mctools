@@ -37,7 +37,7 @@ void init() {
     // std::cout << title_size << std::endl;
 }
 
-Rect getClientRect(const std::string title) {
+Rect getWindowRect(const std::string title) {
     HWND hWnd = FindWindowA(NULL, title.c_str());
 
     WINDOWINFO wi;

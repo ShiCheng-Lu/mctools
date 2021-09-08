@@ -1,7 +1,7 @@
 #include "inventory.h"
-#include "../interface/delay.h"
-#include "../interface/keyboard.h"
-#include "../interface/mouse.h"
+#include "../utils/delay.h"
+#include "../utils/keyboard.h"
+#include "../utils/mouse.h"
 #include "menuCtrl.h"
 
 Inventory::Inventory(int size_x, int size_y, float offset_x, float offset_y)

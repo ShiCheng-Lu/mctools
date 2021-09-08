@@ -9,9 +9,9 @@
 #include "gameCtrl/menuCtrl.h"
 #include "gameCtrl/moveCtrl.h"
 
-#include "interface/keyboard.h"
-#include "interface/mouse.h"
-#include "interface/screen.h"
+#include "utils/keyboard.h"
+#include "utils/mouse.h"
+#include "utils/screen.h"
 
 #include "dispatcher.h"
 #include "strListener.h"
@@ -64,8 +64,7 @@ int main(int argc, char* argv[]) {
     // Mouse::update();
     Screen::init();
 
-    Screen::getWindowLoc("Minecraft");
-    Screen::getWindowSize("Minecraft");
+    Screen::getWindowRect("Minecraft");
 
     // Screen sc{"Minecraft"};
 
