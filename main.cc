@@ -20,14 +20,52 @@
 
 #include "features/steal.h"
 
+#define EXIT_TIMEOUT 5000
+
+static int exit_timer = 0;
+bool shouldExit(StrListener cmd_listener) {
+    if (Keyboard::isPressed('\r')) {
+        std::string cmd = cmd_listener.getContent();
+        cmd_listener.clear();
+        if (cmd == " EXIT\r" || cmd == " END\r") {
+            return true;
+        }
+    }
+    if (Keyboard::isDown('\e')) {
+        exit_timer++;
+        if (exit_timer >= EXIT_TIMEOUT) {
+            // escape held for 5 seconds
+            return true;
+        }
+    } else {
+        exit_timer = 0;
+    }
+}
+
 int main(int argc, char* argv[]) {
     auto ms_per_frame = std::chrono::milliseconds{200};
-    
+
     Keyboard::init();
     Mouse::init();
     Screen::init();
 
-    Delay::sec(1);
+    StrListener cmdlistener{"/MCTOOLS"};
+    // wait for the command "/mctools start"
+    while (true) {
+        cmdlistener.update();
+
+        if (Keyboard::isPressed('\r')) {
+            std::string cmd = cmdlistener.getContent();
+            if (cmd == " START\r") {
+                break;
+            }
+        }
+        if (shouldExit(cmdlistener)) {
+            return 0;
+        }
+        Keyboard::update();
+    }
+
     std::cout << "started" << std::endl;
 
     McWindow win;
@@ -36,25 +74,15 @@ int main(int argc, char* argv[]) {
     Steal steal{win};
     dispatcher.registerAction(&steal);
 
-    StrListener cmdlistener{"/MCTOOLS"};
+    std::cout << "initialization complete" << std::endl;
 
-    auto last = std::chrono::system_clock::now();
-    while (!Keyboard::isDown('\e')) {
+    while (true) {
         cmdlistener.update();
         dispatcher.update();
-
-        if (Keyboard::isPressed('\r')) {
-            std::cout << cmdlistener.getString();
-            cmdlistener.clear();
+        if (shouldExit(cmdlistener)) {
+            return 0;
         }
-
         Keyboard::update();
         Mouse::update();
-
-        auto now = std::chrono::system_clock::now();
-        if (now - last < ms_per_frame) {
-            std::this_thread::sleep_for(now - last);
-            last = now;
-        }
     }
 }

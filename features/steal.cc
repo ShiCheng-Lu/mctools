@@ -37,7 +37,8 @@ bool Steal::condition() {
     if (c == 0xc6c6c6) {
         type = 0;
         return true;
-    } else if (c == 0xffffff) {
+    } else if (c == 0xffffff || c == 0x8b8b8b) {
+        // is a double chest
         type = 1;
         return true;
     }
