@@ -1,6 +1,7 @@
 #include "dispatcher.h"
 
 #include <algorithm>
+#include <thread>
 
 int Dispatcher::registerAction(Action* action) {
     action->_id = _id_max;

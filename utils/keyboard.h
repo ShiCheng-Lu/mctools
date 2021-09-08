@@ -10,8 +10,6 @@ namespace Keyboard {
 const uint8_t CONTROL = 0x11;
 const uint8_t SHIFT = 0x10;
 
-void init();
-
 // simulate keyboard inputs
 void click(const uint8_t key);
 
@@ -24,6 +22,7 @@ bool isDown(const uint8_t key);
 
 bool isPressed(const uint8_t key);
 
+void init();
 void update();
 
 }  // namespace Keyboard

@@ -1,16 +1,8 @@
 #ifndef _DISPATCHER_H_
 #define _DISPATCHER_H_
 
-#include <thread>
 #include <vector>
-
-struct Action {
-    std::thread thread;
-    bool active;
-    int _id;
-    virtual bool condition() { return false; }
-    virtual void operation() {}
-};
+#include "features/action.h"
 
 class Dispatcher {
     std::vector<Action*> actions;
