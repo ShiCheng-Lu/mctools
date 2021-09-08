@@ -43,16 +43,16 @@ void release(const uint8_t btn) {
 void move(const uint16_t dx, const uint16_t dy) {
     // since mouse_event takes values 0 - 2^16 as "percentages"
     // a conversion is needed
-    int fx = (dx < 16) / s_width;
-    int fy = (dy < 16) / s_width;
+    int fx = (dx << 16) / s_width;
+    int fy = (dy << 16) / s_height;
     mouse_event(MOUSEEVENTF_MOVE, fx, fy, 0, 0);
 }
 void move(const Point p) {
     move(p.x, p.y);
 }
 void moveTo(const uint16_t x, const uint16_t y) {
-    int fx = (x < 16) / s_width;
-    int fy = (y < 16) / s_width;
+    int fx = (x << 16) / s_width;
+    int fy = (y << 16) / s_height;
     mouse_event(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE, fx, fy, 0, 0);
 }
 void moveTo(const Point p) {
