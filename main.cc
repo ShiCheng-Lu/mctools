@@ -8,10 +8,12 @@
 #include "gameCtrl/inventory.h"
 #include "gameCtrl/menuCtrl.h"
 #include "gameCtrl/moveCtrl.h"
+#include "gameCtrl/mcWindow.h"
 
 #include "utils/keyboard.h"
 #include "utils/mouse.h"
 #include "utils/screen.h"
+#include "utils/delay.h"
 
 #include "dispatcher.h"
 #include "strListener.h"
@@ -23,7 +25,10 @@ int main(int argc, char* argv[]) {
     // Mouse::update();
     Screen::init();
 
-    Screen::getWindowRect("Minecraft");
+    Delay::sec(1);
+    std::cout << "started" << std::endl;
+
+    McWindow win;
 
     // Screen sc{"Minecraft"};
 

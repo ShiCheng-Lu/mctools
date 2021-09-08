@@ -23,22 +23,7 @@ void Inventory::dropItem(int x, int y, bool all) {
 }
 
 void Inventory::takeAll() {
-    Mouse::release(Mouse::LEFT);
-    Mouse::release(Mouse::RIGHT);
-
-    Keyboard::press(Keyboard::SHIFT);
-
-    MenuCtrl::changeOffset(offset_x, offset_y);
-
-    for (int y = 0; y < size_y; ++y) {
-        for (int x = 0; x < size_x; ++x) {
-            MenuCtrl::selectInv(x, y);
-            Mouse::click(Mouse::LEFT);
-            Delay::ms(17);
-        }
-    }
-    Keyboard::click('E');
-    Keyboard::release(Keyboard::SHIFT);
+    
 }
 void Inventory::dropAll() {
     MenuCtrl::changeOffset(offset_x, offset_y);

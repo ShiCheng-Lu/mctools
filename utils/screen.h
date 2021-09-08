@@ -14,14 +14,16 @@ typedef uint32_t Color;
 
 namespace Screen {
 
-void init();
-
+// return the rect of the window's client,
+// caps at screen size
 Rect getWindowRect(const std::string title);
 
 Color getPixel(const int x, const int y);
 Color getPixel(const Point& p);
 
 Point getSize();
+
+void init();
 
 }  // namespace Screen
 

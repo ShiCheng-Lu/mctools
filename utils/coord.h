@@ -7,8 +7,9 @@ class Point {
    public:
     int x, y;
 
-    Point operator/(const int& a);
-    Point operator+(const Point& other);
+    Point operator/(const int& a) const;
+    Point operator+(const Point& other) const;
+    Point operator*(const int& other) const;
     // Point operator+=(Point other);
 };
 

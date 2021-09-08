@@ -18,27 +18,24 @@ static uint8_t get_id(const uint8_t key) {
 
 void click(const uint8_t key) {
     uint8_t key_id = get_id(key);
-
     press(key_id);
     release(key_id);
 }
 
 void press(const uint8_t key) {
     uint8_t key_id = get_id(key);
-
     keybd_event(key_id, 0, 0, 0);
 }
 
 void release(const uint8_t key) {
     uint8_t key_id = get_id(key);
-
     keybd_event(key_id, 0, KEYEVENTF_KEYUP, 0);
 }
 
 // GETTERS
 
-static std::bitset<KEY_MAX> pressed = 0;
-static std::bitset<KEY_MAX> keyDown = 0;
+static std::bitset<KEY_MAX> pressed;
+static std::bitset<KEY_MAX> keyDown;
 
 bool isDown(const uint8_t key) {
     uint8_t key_id = get_id(key);
@@ -48,6 +45,13 @@ bool isDown(const uint8_t key) {
 bool isPressed(const uint8_t key) {
     uint8_t key_id = get_id(key);
     return pressed.test(key_id);
+}
+
+// INIT + UPDATE
+
+void init() {
+    keyDown.reset();
+    pressed.reset();
 }
 
 void update() {

@@ -12,8 +12,6 @@ const uint8_t LEFT = 0;
 const uint8_t RIGHT = 1;
 const uint8_t MIDDLE = 2;
 
-void init();
-
 // SETTERS
 
 // click the mouse button
@@ -25,8 +23,7 @@ void press(const uint8_t btn);
 // release the mouse button
 void release(const uint8_t btn);
 
-// |dx| |dy| are a 16 bit int from top left to bottom right,
-// where 2^16, 2^16 would be the bottom right as percentages
+// |dx| |dy| are pixels
 void move(const uint16_t dx, const uint16_t dy);
 void move(const Point point);
 // move to a location
@@ -41,6 +38,9 @@ bool isDown(const uint8_t btn);
 // if the button was isPressed since last update
 bool isPressed(const uint8_t btn);
 
+// INIT + UPDATE
+
+void init();
 void update();
 
 }  // namespace Mouse

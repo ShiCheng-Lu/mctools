@@ -1,8 +1,8 @@
 #ifndef _DISPATCHER_H_
 #define _DISPATCHER_H_
 
-#include <features/action.h>
 #include <vector>
+#include "features/action.h"
 
 class Dispatcher {
     std::vector<Action*> actions;

@@ -2,14 +2,16 @@
 
 // Point
 
-Point Point::operator/(const int& a) {
-    return Point{x / a, y / a};
+Point Point::operator/(const int& other) const {
+    return Point{x / other, y / other};
 }
 
-Point Point::operator+(const Point& other) {
+Point Point::operator+(const Point& other) const {
     return Point{x + other.x, y + other.y};
 }
-
+Point Point::operator*(const int& other) const {
+    return Point{x * other, y * other};
+}
 
 std::ostream& operator<<(std::ostream& out, const Point& p) {
     out << p.x << ',' << p.y;
