@@ -1,0 +1,3 @@
+C:/Users/ShiCh/OneDrive/Documents/Code/C-C++/mctools/build/CMakeFiles/edit_cache.dir
+C:/Users/ShiCh/OneDrive/Documents/Code/C-C++/mctools/build/CMakeFiles/mcTools.dir
+C:/Users/ShiCh/OneDrive/Documents/Code/C-C++/mctools/build/CMakeFiles/rebuild_cache.dir
