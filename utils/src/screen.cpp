@@ -64,4 +64,12 @@ void init() {
     // std::cout << title_size << std::endl;
 }
 
+void capture() {
+    HDC hDest = CreateCompatibleDC(s_screenDC);
+    HBITMAP hImg = CreateCompatibleBitmap(hDest, s_width, s_height);
+    SelectObject(hDest, hImg);
+
+    BitBlt(s_screenDC, 0, 0, s_width, s_height, hDest, 0, 0, SRCCOPY);
+}
+
 }  // namespace Screen

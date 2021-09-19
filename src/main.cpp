@@ -22,20 +22,22 @@
 
 #define EXIT_TIMEOUT 5000
 
+static bool running = true;
+
 static int exit_timer = 0;
-bool shouldExit(StrListener cmd_listener) {
+bool checkExitCondition(StrListener cmd_listener) {
     if (Keyboard::isPressed('\r')) {
         std::string cmd = cmd_listener.getContent();
         cmd_listener.clear();
         if (cmd == " EXIT\r" || cmd == " END\r") {
-            return true;
+            running = false;
         }
     }
     if (Keyboard::isDown('\e')) {
         exit_timer++;
         if (exit_timer >= EXIT_TIMEOUT) {
             // escape held for 5 seconds
-            return true;
+            running = false;
         }
     } else {
         exit_timer = 0;
@@ -49,7 +51,7 @@ bool initialize() {
 
     StrListener cmdlistener{"/MCTOOLS"};
     // wait for the command "/mctools start"
-    while (true) {
+    while (running) {
         cmdlistener.update();
 
         if (Keyboard::isPressed('\r')) {
@@ -58,9 +60,7 @@ bool initialize() {
                 break;
             }
         }
-        if (shouldExit(cmdlistener)) {
-            return false;
-        }
+        checkExitCondition(cmdlistener);
         Keyboard::update();
     }
     return true;
@@ -76,12 +76,12 @@ void process() {
 
     StrListener cmdlistener{"/MCTOOLS"};
 
-    while (true) {
+    while (running) {
         cmdlistener.update();
         dispatcher.update();
-        if (shouldExit(cmdlistener)) {
-            return;
-        }
+        
+        checkExitCondition(cmdlistener);
+        
         Keyboard::update();
         Mouse::update();
     }
