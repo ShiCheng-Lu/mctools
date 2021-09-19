@@ -1,9 +1,9 @@
 #include "steal.h"
 
-#include "../utils/delay.h"
-#include "../utils/keyboard.h"
-#include "../utils/mouse.h"
-#include "../utils/screen.h"
+#include "delay.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "screen.h"
 
 #define SLOT_SIZE 18
 
@@ -37,7 +37,8 @@ bool Steal::condition() {
     if (c == 0xc6c6c6) {
         type = 0;
         return true;
-    } else if (c == 0xffffff) {
+    } else if (c == 0xffffff || c == 0x8b8b8b) {
+        // is a double chest
         type = 1;
         return true;
     }

@@ -2,7 +2,7 @@
 #define _DISPATCHER_H_
 
 #include <vector>
-#include "features/action.h"
+#include "action.h"
 
 class Dispatcher {
     std::vector<Action*> actions;

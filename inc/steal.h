@@ -1,9 +1,9 @@
 #ifndef _STEAL_H_
 #define _STEAL_H_
 
-#include "../gameCtrl/mcWindow.h"
-#include "../utils/coord.h"
 #include "action.h"
+#include "coord.h"
+#include "mcWindow.h"
 
 class Steal : public Action {
     McWindow& win;

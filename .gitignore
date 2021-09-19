@@ -1,6 +1,2 @@
-*.o
-*.d
-*.ilk
-*.obj
-*.pdb
-.vscode
+.vscode/
+build/

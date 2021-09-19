@@ -12,7 +12,7 @@ class StrListener {
    public:
     StrListener(std::string start);
 
-    std::string getString(bool include_start = false);
+    std::string getContent();
 
     bool hasContent();
 

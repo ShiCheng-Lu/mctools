@@ -1,8 +1,8 @@
 #include "menuCtrl.h"
 #include <cstdint>
 #include <utility>
-#include "../utils/keyboard.h"
-#include "../utils/mouse.h"
+#include "keyboard.h"
+#include "mouse.h"
 
 #define CENTER \
     { 0x8000, 0x8000 }
@@ -76,9 +76,6 @@ void changeOffset(float offset_x, float offset_y) {
     s_inv_offset_y = (int)(offset_y * SLOT_SIZE);
 }
 
-bool invOpen() {
-
-
-}
+bool invOpen() {}
 
 }  // namespace MenuCtrl

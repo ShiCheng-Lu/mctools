@@ -1,8 +1,8 @@
 #include "inventory.h"
-#include "../utils/delay.h"
-#include "../utils/keyboard.h"
-#include "../utils/mouse.h"
+#include "delay.h"
+#include "keyboard.h"
 #include "menuCtrl.h"
+#include "mouse.h"
 
 Inventory::Inventory(int size_x, int size_y, float offset_x, float offset_y)
     : size_x{size_x}, size_y{size_y}, offset_x{offset_x}, offset_y{offset_y} {}
@@ -22,9 +22,7 @@ void Inventory::dropItem(int x, int y, bool all) {
     MenuCtrl::dropItem(all);
 }
 
-void Inventory::takeAll() {
-    
-}
+void Inventory::takeAll() {}
 void Inventory::dropAll() {
     MenuCtrl::changeOffset(offset_x, offset_y);
 }

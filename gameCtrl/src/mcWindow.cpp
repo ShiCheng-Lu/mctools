@@ -1,8 +1,8 @@
 #include "mcWindow.h"
 
-#include "../utils/delay.h"
-#include "../utils/keyboard.h"
-#include "../utils/screen.h"
+#include "delay.h"
+#include "keyboard.h"
+#include "screen.h"
 
 #include <iostream>
 
@@ -11,12 +11,19 @@
 McWindow::McWindow() : ui_size{0} {
     rect = Screen::getWindowRect("Minecraft");
 
+    std::cout << rect << '\n';
     // remove banner/title area
     center.x = (rect.left + rect.right) / 2;
     // while the sampled pixel is completely white
-    while (Screen::getPixel(center.x, rect.top) == 0xffffff) {
-        rect.top++;
-    };
+    if (Screen::getPixel(center.x, rect.top + 8) == 0xffffff) {
+        // has a banner
+        rect.top += 8;  // this is just straight up magic, don't worry
+        while (Screen::getPixel(center.x, rect.top) == 0xffffff) {
+            rect.top++;
+        };
+    }
+
+    std::cout << "title area removed\n";
 
     // get ui_size
     Keyboard::click('E');

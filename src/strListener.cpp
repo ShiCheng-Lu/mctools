@@ -1,15 +1,12 @@
 #include "strListener.h"
 
-#include "utils/keyboard.h"
+#include "keyboard.h"
 
-const std::string specialChars{"/\r"};
+const std::string specialChars{" /\r"};
 
 StrListener::StrListener(std::string start) : start{start} {}
 
-std::string StrListener::getString(bool include_start) {
-    if (include_start) {
-        return tracked;
-    }
+std::string StrListener::getContent() {
     if (hasContent()) {
         return tracked.substr(start.size());
     } else {
@@ -37,7 +34,7 @@ void StrListener::update() {
     }
 
     // backspace is pressed, delete a character
-    if (Keyboard::isPressed('\b')) {
+    if (Keyboard::isPressed('\b') && tracked.size() > 0) {
         tracked.pop_back();
     }
 
