@@ -2,7 +2,7 @@
 
 #include <chrono>
 #include <thread>
-#include "../utils/keyboard.h"
+#include "keyboard.h"
 
 const int us_per_block = 231642;
 const int us_mod = 230;

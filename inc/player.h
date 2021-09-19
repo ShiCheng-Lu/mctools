@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include "gameCtrl/inventory.h"
+#include "inventory.h"
 
 struct Coord {
     int x, y, z;
@@ -22,7 +22,6 @@ class Player {
     Inventory inventory;
 
     int heightMovement;
-    
 
     void Calibrate();
 

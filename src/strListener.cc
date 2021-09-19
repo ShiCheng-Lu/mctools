@@ -1,6 +1,6 @@
 #include "strListener.h"
 
-#include "utils/keyboard.h"
+#include "keyboard.h"
 
 const std::string specialChars{" /\r"};
 

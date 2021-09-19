@@ -5,20 +5,20 @@
 #include <thread>
 #include <vector>
 
-#include "gameCtrl/inventory.h"
-#include "gameCtrl/mcWindow.h"
-#include "gameCtrl/menuCtrl.h"
-#include "gameCtrl/moveCtrl.h"
+#include "inventory.h"
+#include "mcWindow.h"
+#include "menuCtrl.h"
+#include "moveCtrl.h"
 
-#include "utils/delay.h"
-#include "utils/keyboard.h"
-#include "utils/mouse.h"
-#include "utils/screen.h"
+#include "delay.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "screen.h"
 
 #include "dispatcher.h"
 #include "strListener.h"
 
-#include "features/steal.h"
+#include "steal.h"
 
 #define EXIT_TIMEOUT 5000
 
@@ -42,9 +42,7 @@ bool shouldExit(StrListener cmd_listener) {
     }
 }
 
-int main(int argc, char* argv[]) {
-    auto ms_per_frame = std::chrono::milliseconds{200};
-
+bool initialize() {
     Keyboard::init();
     Mouse::init();
     Screen::init();
@@ -61,28 +59,42 @@ int main(int argc, char* argv[]) {
             }
         }
         if (shouldExit(cmdlistener)) {
-            return 0;
+            return false;
         }
         Keyboard::update();
     }
+    return true;
+}
 
-    std::cout << "started" << std::endl;
-
+void process() {
+    auto ms_per_frame = std::chrono::milliseconds{200};
     McWindow win;
 
     Dispatcher dispatcher;
     Steal steal{win};
     dispatcher.registerAction(&steal);
 
-    std::cout << "initialization complete" << std::endl;
+    StrListener cmdlistener{"/MCTOOLS"};
 
     while (true) {
         cmdlistener.update();
         dispatcher.update();
         if (shouldExit(cmdlistener)) {
-            return 0;
+            return;
         }
         Keyboard::update();
         Mouse::update();
     }
+}
+
+void cleanUp() {
+    // nothing for now
+}
+
+int main(int argc, char* argv[]) {
+    if (initialize()) {
+        process();
+    }
+
+    cleanUp();
 }

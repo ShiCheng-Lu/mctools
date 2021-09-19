@@ -1,9 +1,9 @@
 #include "steal.h"
 
-#include "../utils/delay.h"
-#include "../utils/keyboard.h"
-#include "../utils/mouse.h"
-#include "../utils/screen.h"
+#include "delay.h"
+#include "keyboard.h"
+#include "mouse.h"
+#include "screen.h"
 
 #define SLOT_SIZE 18
 

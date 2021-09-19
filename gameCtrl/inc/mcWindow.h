@@ -3,7 +3,7 @@
 
 // defines the mc window
 
-#include "../utils/coord.h"
+#include "coord.h"
 
 class McWindow {
     int ui_size;
