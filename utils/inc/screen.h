@@ -25,6 +25,8 @@ Point getSize();
 
 void init();
 
+void update();
+
 }  // namespace Screen
 
 #endif
