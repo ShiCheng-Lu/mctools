@@ -25,7 +25,10 @@ Point getSize();
 
 void init();
 
-void update();
+void setCaptureArea(Rect& r);
+void capture();
+Color getPixelFromCapture(const int x, const int y);
+Color getPixelFromCapture(const Point& p);
 
 }  // namespace Screen
 

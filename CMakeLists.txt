@@ -3,13 +3,14 @@ cmake_minimum_required(VERSION 3.20.0)
 set(CXX_STANDARD 17)
 set(CXX_STANDARD_REQUIRED true)
 
-project(mcTools VERSION 0.1)
+project(mctools VERSION 0.1)
 
 add_executable(${PROJECT_NAME}
     src/main.cpp
     src/steal.cpp
     src/dispatcher.cpp
     src/strListener.cpp
+    src/villager.cpp
 )
 
 add_subdirectory(utils)
