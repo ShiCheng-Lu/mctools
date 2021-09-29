@@ -27,19 +27,18 @@ McWindow::McWindow() : ui_size{0} {
 
     // get ui_size
     Keyboard::click('E');
+    Delay::ms(50);
+    // can close the inventory here, as the delay is enough
+    // to sample the rest of the ui_size as it's small
+    Keyboard::click('E');
     center.y = (rect.top + rect.bottom) / 2;
     int test_y = center.y;
     // wait until the inventory pops up
     while (Screen::getPixel(center.x, test_y) != 0xc6c6c6) {
-        Delay::ms(150);
     }
     while (Screen::getPixel(center.x, test_y) == 0xc6c6c6) {
         test_y--;
     }
-    // can close the inventory here, as the delay is enough
-    // to sample the rest of the ui_size as it's small
-    Keyboard::click('E');
-
     while (Screen::getPixel(center.x, test_y - ui_size) == 0xffffff) {
         ui_size++;
     }

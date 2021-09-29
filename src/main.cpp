@@ -1,6 +1,7 @@
 #include <windows.h>
 #include <bitset>
 #include <chrono>
+#include <iomanip>
 #include <iostream>
 #include <thread>
 #include <vector>
@@ -18,16 +19,33 @@
 #include "dispatcher.h"
 #include "strListener.h"
 
+#include "infinifly.h"
 #include "steal.h"
+#include "villager.h"
 
-#define EXIT_TIMEOUT 5000
+#define EXIT_TIMEOUT 200
 
 static bool running = true;
 
+static int frames = 0;
+
+void add_frame() {
+    frames++;
+    Delay::sec(1);
+    frames--;
+}
+
+void update_frame() {
+    std::thread t(add_frame);
+    t.detach();
+    std::cout << std::dec << std::setw(5) << '\r' << frames << std::flush;
+}
+
 static int exit_timer = 0;
-bool checkExitCondition(StrListener cmd_listener) {
+void checkExitCondition(StrListener& cmd_listener) {
     if (Keyboard::isPressed('\r')) {
         std::string cmd = cmd_listener.getContent();
+        std::cout << cmd << std::endl;
         cmd_listener.clear();
         if (cmd == " EXIT\r" || cmd == " END\r") {
             running = false;
@@ -44,7 +62,11 @@ bool checkExitCondition(StrListener cmd_listener) {
     }
 }
 
-bool initialize() {
+void initialize() {
+    if (!running) {
+        return;
+    }
+
     Keyboard::init();
     Mouse::init();
     Screen::init();
@@ -57,33 +79,48 @@ bool initialize() {
         if (Keyboard::isPressed('\r')) {
             std::string cmd = cmdlistener.getContent();
             if (cmd == " START\r") {
-                break;
+                return;
             }
         }
         checkExitCondition(cmdlistener);
         Keyboard::update();
+
+        update_frame();
+
+        Delay::ms(20);
     }
-    return true;
 }
 
 void process() {
+    if (!running) {
+        return;
+    }
     auto ms_per_frame = std::chrono::milliseconds{200};
     McWindow win;
+    StrListener cmdlistener{"/MCTOOLS"};
 
     Dispatcher dispatcher;
     Steal steal{win};
     dispatcher.registerAction(&steal);
 
-    StrListener cmdlistener{"/MCTOOLS"};
+    VillagerTrader villager{win, cmdlistener};
+    dispatcher.registerAction(&villager);
+
+    InfiniFly infiniFly{cmdlistener};
+    dispatcher.registerAction(&infiniFly);
 
     while (running) {
         cmdlistener.update();
         dispatcher.update();
-        
+
         checkExitCondition(cmdlistener);
-        
+
         Keyboard::update();
         Mouse::update();
+
+        update_frame();
+
+        Delay::ms(20);
     }
 }
 
@@ -92,9 +129,10 @@ void cleanUp() {
 }
 
 int main(int argc, char* argv[]) {
-    if (initialize()) {
-        process();
-    }
+    std::cout << "program started" << std::endl;
+    initialize();
+    std::cout << "tool started" << std::endl;
+    process();
 
     cleanUp();
 }

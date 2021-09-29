@@ -5,7 +5,7 @@
 
 struct Action {
     std::thread thread;
-    bool active;
+    bool active = false;
     int _id;
     virtual bool condition() { return false; }
     virtual void operation() {}

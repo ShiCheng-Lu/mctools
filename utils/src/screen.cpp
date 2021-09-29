@@ -1,5 +1,9 @@
 #include "screen.h"
 
+#ifndef NOMINMAX
+#define NOMINMAX 1
+#endif  // NOMINMAX
+
 #include <windows.h>
 #include <wingdi.h>
 #include <algorithm>
@@ -41,35 +45,32 @@ void init() {
     s_screenDC = GetDC(NULL);
     s_width = GetDeviceCaps(s_screenDC, HORZRES);
     s_height = GetDeviceCaps(s_screenDC, VERTRES);
-    // window = FindWindowA(nullptr, title.c_str());
-    // RECT rect;
-    // GetClientRect(window, &rect);
-    // width = rect.right;
-    // height = rect.bottom;
+}
 
-    // title_size = 0;
+HDC captureDC;
+HBITMAP hBitmap;
+Point topleft;
+Point size;
 
-    // for (int i = 0; i < 100; ++i) {
-    //     POINT p = {0, title_size};
-    //     ClientToScreen(window, &p);
-    //     Color c = GetPixel(s_screenDC, p.x, p.y);
-    //     if (c != 0xdadada && c != 0xffffffff) {
-    //         std::cout << std::hex << c << std::endl;
-    //         std::cout << title_size << std::endl;
-    //     } else {
-    //         title_size++;
-    //         height--;
-    //     }
-    // }
-    // std::cout << title_size << std::endl;
+void setCaptureArea(Rect& r) {
+    size.x = r.right - r.left;
+    size.y = r.bottom - r.top;
+
+    captureDC = CreateCompatibleDC(s_screenDC);
+    hBitmap = CreateCompatibleBitmap(captureDC, size.x, size.y);
+    SelectObject(captureDC, hBitmap);
 }
 
 void capture() {
-    HDC hDest = CreateCompatibleDC(s_screenDC);
-    HBITMAP hImg = CreateCompatibleBitmap(hDest, s_width, s_height);
-    SelectObject(hDest, hImg);
+    BitBlt(captureDC, 0, 0, s_width, s_height, s_screenDC, 0, 0, SRCCOPY);
+}
 
-    BitBlt(s_screenDC, 0, 0, s_width, s_height, hDest, 0, 0, SRCCOPY);
+Color getPixelFromCapture(const int x, const int y) {
+    return GetPixel(captureDC, x, y);
+}
+
+Color getPixelFromCapture(const Point& p) {
+    return GetPixel(captureDC, p.x, p.y);
 }
 
 }  // namespace Screen

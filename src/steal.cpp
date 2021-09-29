@@ -1,5 +1,6 @@
 #include "steal.h"
 
+#include <iostream>
 #include "delay.h"
 #include "keyboard.h"
 #include "mouse.h"
@@ -25,6 +26,8 @@ void Steal::takeAll(const Point& inv_size, const Point& offset) {
     }
     Keyboard::click('E');
     Keyboard::release(Keyboard::SHIFT);
+
+    active = false;
 }
 
 bool Steal::condition() {
@@ -32,7 +35,7 @@ bool Steal::condition() {
         return false;
     }
     Color c = Screen::getPixel(win.getCenter());
-    std::cout << std::hex << c << std::endl;
+    std::cout << '\r' << std::hex << c << std::endl;
 
     if (c == 0xc6c6c6) {
         type = 0;
@@ -44,7 +47,9 @@ bool Steal::condition() {
     }
     return false;
 }
+
 void Steal::operation() {
+    std::cout << "steal started";
     switch (type) {
         case 0: {
             takeAll(Point{9, 3}, Point{SLOT_SIZE * -4, SLOT_SIZE * -3});

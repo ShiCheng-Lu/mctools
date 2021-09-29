@@ -17,7 +17,8 @@ int Dispatcher::cancelAction(Action* target) {
 
 void Dispatcher::update() {
     for (auto& action : actions) {
-        if (action->condition()) {
+        if (!action->active && action->condition()) {
+            action->active = true;
             action->thread = std::thread(Action::operation, action);
             action->thread.detach();
         }
