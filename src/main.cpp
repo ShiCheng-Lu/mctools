@@ -19,6 +19,7 @@
 #include "dispatcher.h"
 #include "strListener.h"
 
+#include "infinifly.h"
 #include "steal.h"
 #include "villager.h"
 
@@ -41,9 +42,10 @@ void update_frame() {
 }
 
 static int exit_timer = 0;
-void checkExitCondition(StrListener cmd_listener) {
+void checkExitCondition(StrListener& cmd_listener) {
     if (Keyboard::isPressed('\r')) {
         std::string cmd = cmd_listener.getContent();
+        std::cout << cmd << std::endl;
         cmd_listener.clear();
         if (cmd == " EXIT\r" || cmd == " END\r") {
             running = false;
@@ -104,6 +106,8 @@ void process() {
     VillagerTrader villager{win, cmdlistener};
     dispatcher.registerAction(&villager);
 
+    InfiniFly infiniFly{cmdlistener};
+    dispatcher.registerAction(&infiniFly);
 
     while (running) {
         cmdlistener.update();

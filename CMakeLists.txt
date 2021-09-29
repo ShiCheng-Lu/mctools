@@ -11,6 +11,7 @@ add_executable(${PROJECT_NAME}
     src/dispatcher.cpp
     src/strListener.cpp
     src/villager.cpp
+    src/infinifly.cpp
 )
 
 add_subdirectory(utils)

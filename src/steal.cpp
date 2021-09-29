@@ -26,6 +26,8 @@ void Steal::takeAll(const Point& inv_size, const Point& offset) {
     }
     Keyboard::click('E');
     Keyboard::release(Keyboard::SHIFT);
+
+    active = false;
 }
 
 bool Steal::condition() {
